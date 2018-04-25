@@ -1,0 +1,96 @@
+body, html {
+  margin:0;
+  padding:0;
+}
+
+#footer>a {
+  color:#16161d;
+  text-decoration:none;
+}
+
+h1 {
+  font-family: "Sacramento",sans-serif;
+  padding: 20px 20px 0px 20px;
+  margin:0;
+}
+
+h4 {
+  font-family: "Amatic SC",sans-serif;
+  padding:0;
+  margin:10px 10px 0px 0px;
+  font-size:20px;
+}
+
+
+#footer {
+  clear:both;
+  width:100%;
+  text-align:right;
+  right:5;
+  bottom:0;
+  position:absolute;
+  font-family: "Sacramento",sans-serif;
+  font-size:20px;
+
+}
+.container, textarea {
+  float:left;
+  padding:5px;
+  margin:5px;
+  height:75px;
+  width:92px;
+  border: black solid 1px;
+}
+
+textarea {
+  width:50%;
+}
+
+#buttons {
+  float:left;
+  height:75px;
+  
+}
+
+.button {
+  height:87px;
+  width:92px;
+  font-family: "Sacramento",sans-serif;
+  font-size:20px;
+  color:#16161d;
+  background:white;
+  border:0;
+  margin:5px;
+  padding:5px;
+  padding:0px;
+  border: black solid 1px;
+}
+
+form {
+  width:100%;
+  clear:both;
+  text-align: left;
+  padding:10px;
+}
+
+#output {
+  width:100%;
+  clear:both;
+  text-align: left;
+  font-size:14px;
+  padding:10px;
+  margin:10px
+}
+.options {
+  border: 0;
+  background: white;
+  font-family: "Amatic SC",sans-serif;
+  width:90%;
+  margin:10px;
+}
+
+@media (max-width: 800px) {
+  textarea {
+    width:90%;
+  }
+}
