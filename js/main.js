@@ -1,41 +1,45 @@
+const submitButton = document.querySelector("#submit");
+const clearButton = document.querySelector("#clear");
+const recordButton = document.querySelector("#record");
+const speakButton = document.querySelector("#speak");
 
-
-var submitButton = document.querySelector("#submit");
-var clearButton = document.querySelector("#clear");
+const output = document.querySelector("#output");
 
 function translate() {
-  var textToTranslate = document.querySelector("#inputArea").value;
-  var langToSelector = document.querySelector("#langTo");
-  var langTo = langToSelector.options[langToSelector.selectedIndex].value;
-  var langFromSelector = document.querySelector("#langFrom");
-  var langFrom = langFromSelector.options[langFromSelector.selectedIndex].value;
-  var baseURL = `https://translate.yandex.net/api/v1.5/tr.json/translate?`
-  var API_KEY = `trnsl.1.1.20180423T103948Z.60e86b9832a4089b.e90dba2944c802e016e2625512bee96db9723644`;
-  var key = `key=${API_KEY}`; 
-  var text = `text=${textToTranslate}`;
-  var lang = `lang=${langFrom}-${langTo}`;
-  var URL = `${baseURL}&${key}&${text}&${lang}`;
+  let textToTranslate = document.querySelector("#inputArea").value;
+  let langToSelector = document.querySelector("#langTo");
+  let langTo = langToSelector.options[langToSelector.selectedIndex].value;
+  let langFromSelector = document.querySelector("#langFrom");
+  let langFrom = langFromSelector.options[langFromSelector.selectedIndex].value;
+  let baseURL = `https://translate.yandex.net/api/v1.5/tr.json/translate?`;
+  let API_KEY = `trnsl.1.1.20180423T103948Z.60e86b9832a4089b.e90dba2944c802e016e2625512bee96db9723644`;
+  let key = `key=${API_KEY}`;
+  let text = `text=${textToTranslate}`;
+  let lang = `lang=${langFrom}-${langTo}`;
+  let URL = `${baseURL}&${key}&${text}&${lang}`;
+  fetch(URL, { method: "GET" }).then(response => response.json());
+}
 
-  if (langTo === "en") {
-    output.style.fontFamily = `"Poiret One",sans-serif`;
-  } else if (langTo === "fr") {
-    output.style.fontFamily = `"Berkshire Swash","Poiret One",sans-serif`;
-  } else if (langTo === "de") {
-    output.style.fontFamily = `"Amatic SC",sans-serif`;
-  } else if (langTo === "ru") {
-    output.style.fontFamily = `"Satisfy",sans-serif`;
-  } else {
-    output.style.fontFamily = `"Sacramento",sans-serif`;
-  }
+function record() {
+  const recog = new webkitSpeechRecognition();
+  recog.onresult = function(data) {
+    const words = data.results[0][0].transcript;
+    translate(words).then(displayData);
+  };
+  recog.start();
+}
 
-  fetch(URL, {method:"GET"})
-    .then(function(response){
-      return response.json();
-    })
-    .then(function(data){
-      var output = document.querySelector("#output");
-      output.innerHTML = `<p>${data.text[0]}</p>`
-    })
+function displayData(data) {
+  const [translation] = data.text;
+  output.innerHTML = `<p>${translation}</p>`;
+}
+
+function speak(data) {
+  const [translation] = data.text;
+  output.innerHTML = `<p>${translation}</p>`;
+  const synth = window.speechSynthesis;
+  const utterThis = new SpeechSynthesisUtterance(translation);
+  utterThis.lang = synth.speak(utterThis);
 }
 
 function clearPage() {
@@ -44,8 +48,16 @@ function clearPage() {
   }
 }
 
+recordButton.addEventListener("click", record);
 
+submitButton.addEventListener("click", function(data) {
+  translate().then(displayData);
+});
 
-submitButton.addEventListener("click",translate);
-clearButton.addEventListener("click",clearPage)
+speakButton.addEventListener("click", function() {
+  translate().then(function(data) {
+    speak(data);
+  });
+});
 
+clearButton.addEventListener("click", clearPage);
